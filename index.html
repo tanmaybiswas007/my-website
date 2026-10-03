@@ -1,1 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SimpleStore | Online Shop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a class="logo" href="#">Simple<span>Store</span></a>
+      <nav>
+        <a href="#products">Products</a>
+        <a href="#about">About</a>
+        <button class="cart-button" id="cartButton">🛒 Cart <span id="cartCount">0</span></button>
+      </nav>
+    </div>
+  </header>
 
+  <main>
+    <section class="hero">
+      <div class="container hero-content">
+        <div>
+          <p class="eyebrow">WELCOME TO SIMPLESTORE</p>
+          <h1>Good products.<br><span>Simple shopping.</span></h1>
+          <p>Discover useful everyday products at straightforward prices.</p>
+          <a href="#products" class="btn">Shop Now</a>
+        </div>
+        <div class="hero-card">
+          <div class="hero-icon">🛍️</div>
+          <h3>New arrivals</h3>
+          <p>Fresh products added every week.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="shop container" id="products">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">OUR SHOP</p>
+          <h2>Featured Products</h2>
+        </div>
+        <input id="searchInput" type="search" placeholder="Search products...">
+      </div>
+
+      <div class="filters">
+        <button class="filter active" data-category="All">All</button>
+        <button class="filter" data-category="Fashion">Fashion</button>
+        <button class="filter" data-category="Electronics">Electronics</button>
+        <button class="filter" data-category="Home">Home</button>
+      </div>
+
+      <div class="products" id="productGrid"></div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="container about-inner">
+        <div>
+          <p class="eyebrow">WHY SIMPLESTORE?</p>
+          <h2>Simple, fast and easy.</h2>
+        </div>
+        <div class="features">
+          <div><strong>🚚</strong><p>Fast delivery</p></div>
+          <div><strong>🔒</strong><p>Secure checkout</p></div>
+          <div><strong>↩️</strong><p>Easy returns</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <p>© 2026 SimpleStore. All rights reserved.</p>
+      <p>Contact: hello@example.com</p>
+    </div>
+  </footer>
+
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <button id="closeCart" class="close">×</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <div class="total"><span>Total</span><strong id="cartTotal">$0.00</strong></div>
+      <button class="btn checkout" id="checkoutButton">Checkout</button>
+    </div>
+  </aside>
+
+  <div class="modal" id="checkoutModal">
+    <div class="modal-box">
+      <button class="close" id="closeModal">×</button>
+      <p class="eyebrow">CHECKOUT</p>
+      <h2>Complete your order</h2>
+      <form id="checkoutForm">
+        <label>Full name<input required type="text" name="name" placeholder="Your name"></label>
+        <label>Email<input required type="email" name="email" placeholder="you@example.com"></label>
+        <label>Address<textarea required name="address" rows="3" placeholder="Delivery address"></textarea></label>
+        <button class="btn" type="submit">Place Order</button>
+      </form>
+      <p class="demo-note">Demo checkout — no real payment is processed.</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
