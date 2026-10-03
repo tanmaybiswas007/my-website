@@ -1,173 +1,289 @@
+```javascript
+/* =========================================
+   WHATSAPP NUMBER
+   ========================================= */
 
-const products = [
-  { id: 1, name: "Classic T-Shirt", category: "Fashion", price: 24.99, icon: "👕" },
-  { id: 2, name: "Running Shoes", category: "Fashion", price: 59.99, icon: "👟" },
-  { id: 3, name: "Wireless Headphones", category: "Electronics", price: 79.99, icon: "🎧" },
-  { id: 4, name: "Smart Watch", category: "Electronics", price: 99.99, icon: "⌚" },
-  { id: 5, name: "Coffee Mug", category: "Home", price: 14.99, icon: "☕" },
-  { id: 6, name: "Desk Lamp", category: "Home", price: 34.99, icon: "💡" },
-  { id: 7, name: "Backpack", category: "Fashion", price: 44.99, icon: "🎒" },
-  { id: 8, name: "Bluetooth Speaker", category: "Electronics", price: 49.99, icon: "🔊" }
-];
+const WHATSAPP_NUMBER = "YOUR_WHATSAPP_NUMBER";
 
-let cart = JSON.parse(localStorage.getItem("simpleStoreCart")) || [];
-let selectedCategory = "All";
 
-const productGrid = document.getElementById("productGrid");
-const searchInput = document.getElementById("searchInput");
-const cartPanel = document.getElementById("cartPanel");
-const overlay = document.getElementById("overlay");
-const cartItems = document.getElementById("cartItems");
-const cartCount = document.getElementById("cartCount");
-const cartTotal = document.getElementById("cartTotal");
-const checkoutModal = document.getElementById("checkoutModal");
+/* =========================================
+   CART
+   ========================================= */
 
-function renderProducts() {
-  const search = searchInput.value.toLowerCase().trim();
+let cart = [];
 
-  const filtered = products.filter(product => {
-    const categoryMatch = selectedCategory === "All" || product.category === selectedCategory;
-    const searchMatch = product.name.toLowerCase().includes(search);
-    return categoryMatch && searchMatch;
-  });
 
-  productGrid.innerHTML = filtered.length
-    ? filtered.map(product => `
-      <article class="product">
-        <div class="product-image">${product.icon}</div>
-        <div class="product-info">
-          <span class="product-category">${product.category}</span>
-          <h3>${product.name}</h3>
-          <div class="product-bottom">
-            <span class="price">$${product.price.toFixed(2)}</span>
-            <button class="add" onclick="addToCart(${product.id})">Add to cart</button>
-          </div>
-        </div>
-      </article>
-    `).join("")
-    : `<p>No products found.</p>`;
+/* =========================================
+   ADD PRODUCT
+   ========================================= */
+
+function addToCart(name, price) {
+
+    const existingProduct = cart.find(
+        item => item.name === name
+    );
+
+    if (existingProduct) {
+
+        existingProduct.quantity++;
+
+    } else {
+
+        cart.push({
+            name: name,
+            price: price,
+            quantity: 1
+        });
+    }
+
+    updateCart();
 }
 
-function saveCart() {
-  localStorage.setItem("simpleStoreCart", JSON.stringify(cart));
+
+/* =========================================
+   REMOVE PRODUCT
+   ========================================= */
+
+function removeFromCart(name) {
+
+    const product = cart.find(
+        item => item.name === name
+    );
+
+    if (!product) {
+        return;
+    }
+
+    product.quantity--;
+
+    if (product.quantity <= 0) {
+
+        cart = cart.filter(
+            item => item.name !== name
+        );
+    }
+
+    updateCart();
 }
 
-function addToCart(id) {
-  const item = cart.find(item => item.id === id);
-  if (item) {
-    item.quantity++;
-  } else {
-    cart.push({ id, quantity: 1 });
-  }
-  saveCart();
-  renderCart();
-  openCart();
+
+/* =========================================
+   UPDATE CART DISPLAY
+   ========================================= */
+
+function updateCart() {
+
+    const cartItems = document.getElementById("cartItems");
+    const cartTotal = document.getElementById("cartTotal");
+
+    if (cart.length === 0) {
+
+        cartItems.innerHTML =
+            "<p>Your cart is empty.</p>";
+
+        cartTotal.textContent = "0.00";
+
+        return;
+    }
+
+
+    let html = "";
+    let total = 0;
+
+
+    cart.forEach(item => {
+
+        const itemTotal =
+            item.price * item.quantity;
+
+        total += itemTotal;
+
+
+        html += `
+            <div class="cart-item">
+
+                <div>
+                    <strong>${item.name}</strong>
+                    <br>
+                    €${item.price.toFixed(2)}
+                    × ${item.quantity}
+                </div>
+
+                <div>
+                    <strong>
+                        €${itemTotal.toFixed(2)}
+                    </strong>
+
+                    <br>
+
+                    <button
+                        onclick="removeFromCart('${item.name}')"
+                    >
+                        −
+                    </button>
+
+                    <button
+                        onclick="addToCart('${item.name}', ${item.price})"
+                    >
+                        +
+                    </button>
+                </div>
+
+            </div>
+        `;
+    });
+
+
+    cartItems.innerHTML = html;
+
+    cartTotal.textContent =
+        total.toFixed(2);
 }
 
-function changeQuantity(id, amount) {
-  const item = cart.find(item => item.id === id);
-  if (!item) return;
-  item.quantity += amount;
-  if (item.quantity <= 0) cart = cart.filter(item => item.id !== id);
-  saveCart();
-  renderCart();
+
+/* =========================================
+   CALCULATE TOTAL
+   ========================================= */
+
+function calculateTotal() {
+
+    return cart.reduce(
+        (total, item) => {
+
+            return total +
+                item.price * item.quantity;
+
+        },
+        0
+    );
 }
 
-function removeFromCart(id) {
-  cart = cart.filter(item => item.id !== id);
-  saveCart();
-  renderCart();
-}
 
-function renderCart() {
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  cartCount.textContent = totalItems;
+/* =========================================
+   CREATE WHATSAPP ORDER
+   ========================================= */
 
-  if (!cart.length) {
-    cartItems.innerHTML = `<div class="empty">Your cart is empty.<br>Add something you like!</div>`;
-    cartTotal.textContent = "$0.00";
-    return;
-  }
+document
+    .getElementById("orderForm")
+    .addEventListener("submit", function(event) {
 
-  let total = 0;
+        event.preventDefault();
 
-  cartItems.innerHTML = cart.map(item => {
-    const product = products.find(product => product.id === item.id);
-    const itemTotal = product.price * item.quantity;
-    total += itemTotal;
 
-    return `
-      <div class="cart-item">
-        <div class="cart-item-image">${product.icon}</div>
-        <div>
-          <strong>${product.name}</strong>
-          <div>$${product.price.toFixed(2)}</div>
-          <div class="qty">
-            <button onclick="changeQuantity(${product.id}, -1)">−</button>
-            <span>${item.quantity}</span>
-            <button onclick="changeQuantity(${product.id}, 1)">+</button>
-          </div>
-          <button class="remove" onclick="removeFromCart(${product.id})">Remove</button>
-        </div>
-        <strong>$${itemTotal.toFixed(2)}</strong>
-      </div>
-    `;
-  }).join("");
+        /* Check cart */
 
-  cartTotal.textContent = `$${total.toFixed(2)}`;
-}
+        if (cart.length === 0) {
 
-function openCart() {
-  cartPanel.classList.add("open");
-  overlay.classList.add("show");
-}
+            alert(
+                "Your cart is empty. Please add a product first."
+            );
 
-function closeCart() {
-  cartPanel.classList.remove("open");
-  overlay.classList.remove("show");
-}
+            return;
+        }
 
-document.getElementById("cartButton").addEventListener("click", openCart);
-document.getElementById("closeCart").addEventListener("click", closeCart);
-overlay.addEventListener("click", closeCart);
 
-searchInput.addEventListener("input", renderProducts);
+        /* Customer information */
 
-document.querySelectorAll(".filter").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
-    button.classList.add("active");
-    selectedCategory = button.dataset.category;
-    renderProducts();
-  });
-});
+        const name =
+            document.getElementById("customerName").value.trim();
 
-document.getElementById("checkoutButton").addEventListener("click", () => {
-  if (!cart.length) {
-    alert("Your cart is empty.");
-    return;
-  }
-  checkoutModal.classList.add("show");
-});
+        const phone =
+            document.getElementById("customerPhone").value.trim();
 
-document.getElementById("closeModal").addEventListener("click", () => {
-  checkoutModal.classList.remove("show");
-});
+        const address =
+            document.getElementById("customerAddress").value.trim();
 
-checkoutModal.addEventListener("click", event => {
-  if (event.target === checkoutModal) checkoutModal.classList.remove("show");
-});
+        const city =
+            document.getElementById("customerCity").value.trim();
 
-document.getElementById("checkoutForm").addEventListener("submit", event => {
-  event.preventDefault();
-  alert("Thank you! Your demo order has been placed.");
-  cart = [];
-  saveCart();
-  renderCart();
-  checkoutModal.classList.remove("show");
-  closeCart();
-  event.target.reset();
-});
+        const postal =
+            document.getElementById("customerPostal").value.trim();
 
-renderProducts();
-renderCart();
+
+        /* Create order number */
+
+        const orderNumber =
+            "ORD-" +
+            Date.now().toString().slice(-6);
+
+
+        /* Current date/time */
+
+        const orderDate =
+            new Date().toLocaleString();
+
+
+        /* Product list */
+
+        let productText = "";
+
+
+        cart.forEach(item => {
+
+            const itemTotal =
+                item.price * item.quantity;
+
+            productText +=
+                `• ${item.name} × ${item.quantity} = €${itemTotal.toFixed(2)}\n`;
+        });
+
+
+        /* Total */
+
+        const total =
+            calculateTotal();
+
+
+        /* WhatsApp message */
+
+        const message = `🛒 *NEW ORDER*
+
+*Order Number:* ${orderNumber}
+
+*CUSTOMER DETAILS*
+Name: ${name}
+Phone: ${phone}
+
+*DELIVERY ADDRESS*
+${address}
+${city}
+${postal}
+
+*ORDER DETAILS*
+${productText}
+*TOTAL: €${total.toFixed(2)}*
+
+Order Time:
+${orderDate}
+
+Thank you!`;
+
+
+        /* Encode message */
+
+        const encodedMessage =
+            encodeURIComponent(message);
+
+
+        /* WhatsApp URL */
+
+        const whatsappURL =
+            `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+
+
+        /* Open WhatsApp */
+
+        window.open(
+            whatsappURL,
+            "_blank"
+        );
+
+    });
+
+
+/* =========================================
+   INITIAL CART
+   ========================================= */
+
+updateCart();
+```
