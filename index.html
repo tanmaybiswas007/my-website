@@ -1,109 +1,902 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Shop useful everyday products at Simple Store. Add items to your cart and place your order directly on WhatsApp.">
-  <title>Simple Store | Online Shop</title>
-  <!-- Loads the stylesheet that controls the existing store layout and colors. -->
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SimpleStore</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f7f7;
+            color: #222;
+        }
+
+        button,
+        input,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: #111;
+            color: white;
+            padding: 18px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-box {
+            width: 280px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 11px 14px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .cart-button {
+            border: none;
+            background: white;
+            color: #111;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            min-width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #e53935;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            padding: 70px 20px;
+            text-align: center;
+            background: white;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            color: #666;
+            font-size: 17px;
+        }
+
+        /* =========================
+           FILTERS
+        ========================= */
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 30px 20px 10px;
+        }
+
+        .filter {
+            padding: 10px 18px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        .filter:hover,
+        .filter.active {
+            background: #111;
+            color: white;
+        }
+
+        /* =========================
+           PRODUCTS
+        ========================= */
+
+        .products-container {
+            max-width: 1300px;
+            margin: auto;
+            padding: 30px 20px 70px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .product {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.13);
+        }
+
+        /* =========================
+           PRODUCT IMAGE
+        ========================= */
+
+        .product-image {
+            width: 100%;
+            height: 260px;
+            background: #f1f1f1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .no-product-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* =========================
+           THUMBNAILS
+        ========================= */
+
+        .product-thumbnails {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            padding: 5px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 8px;
+        }
+
+        .product-thumbnail {
+            width: 48px;
+            height: 48px;
+            border: 2px solid transparent;
+            padding: 0;
+            background: white;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .product-thumbnail.active {
+            border-color: #111;
+        }
+
+        .product-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* =========================
+           PRODUCT INFORMATION
+        ========================= */
+
+        .product-info {
+            padding: 18px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-info h3 {
+            font-size: 18px;
+            margin: 7px 0 15px;
+        }
+
+        .product-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .add {
+            background: #111;
+            color: white;
+            border: none;
+            padding: 9px 13px;
+            border-radius: 7px;
+        }
+
+        .add:hover {
+            background: #333;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px;
+            color: #777;
+        }
+
+        /* =========================
+           OVERLAY
+        ========================= */
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        /* =========================
+           CART
+        ========================= */
+
+        .cart-panel {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 420px;
+            max-width: 95%;
+            height: 100vh;
+            background: white;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.3s ease;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.15);
+        }
+
+        .cart-panel.open {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-header h2 {
+            font-size: 22px;
+        }
+
+        .close-button {
+            border: none;
+            background: none;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 12px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-image {
+            width: 75px;
+            height: 75px;
+            flex-shrink: 0;
+            background: #f2f2f2;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-product-details {
+            flex: 1;
+        }
+
+        .cart-product-details strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .cart-product-details > div {
+            font-size: 13px;
+            color: #777;
+        }
+
+        .qty {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .qty button {
+            width: 27px;
+            height: 27px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .remove {
+            border: none;
+            background: none;
+            color: #e53935;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .checkout-button {
+            width: 100%;
+            padding: 14px;
+            background: #111;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #777;
+            line-height: 1.8;
+        }
+
+        /* =========================
+           CHECKOUT MODAL
+        ========================= */
+
+        .checkout-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 400;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .checkout-modal.show {
+            display: flex;
+        }
+
+        .checkout-box {
+            background: white;
+            width: 500px;
+            max-width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 14px;
+            padding: 25px;
+        }
+
+        .checkout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .checkout-header button {
+            border: none;
+            background: none;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .submit-order {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #25D366;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #111;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 8px 0;
+            color: #ccc;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1000px) {
+
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            header {
+                flex-wrap: wrap;
+            }
+
+            .search-box {
+                width: 220px;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .header-right {
+                width: 100%;
+            }
+
+            .search-box {
+                flex: 1;
+                width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-image {
+                height: 300px;
+            }
+
+            header {
+                padding: 15px;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .cart-panel {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <header class="header">
-    <div class="container nav">
-      <a class="logo" href="#top" aria-label="Simple Store home">Simple <span>Store</span></a>
-      <nav aria-label="Main navigation">
-        <a href="#products">Products</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-        <button class="cart-button" id="cartButton" type="button" aria-label="Open shopping cart">🛒 Cart <span id="cartCount">0</span></button>
-      </nav>
+
+<header>
+
+    <div class="logo">
+        SimpleStore
     </div>
-  </header>
 
-  <main id="top">
-    <section class="hero">
-      <div class="container hero-content">
-        <div>
-          <p class="eyebrow">WELCOME TO SIMPLE STORE</p>
-          <h1>Good products.<br><span>Simple shopping.</span></h1>
-          <p>Discover useful everyday products at straightforward prices. Choose what you love and send your order directly to us on WhatsApp.</p>
-          <a href="#products" class="btn">Shop Now</a>
+    <div class="header-right">
+
+        <div class="search-box">
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Search products..."
+                aria-label="Search products"
+            >
         </div>
-        <div class="hero-card">
-          <div class="hero-icon" aria-hidden="true">🛍️</div>
-          <h3>Easy WhatsApp ordering</h3>
-          <p>Build your cart and send your order details in one tap.</p>
-        </div>
-      </div>
-    </section>
 
-    <section class="shop container" id="products">
-      <div class="section-heading">
-        <div><p class="eyebrow">OUR SHOP</p><h2>Featured Products</h2></div>
-        <label class="search-label" for="searchInput">Search products</label>
-        <input id="searchInput" type="search" placeholder="Search products..." aria-label="Search products">
-      </div>
-      <div class="filters" aria-label="Filter products by category">
-        <button class="filter active" data-category="All" type="button">All</button>
-        <button class="filter" data-category="Fashion" type="button">Fashion</button>
-        <button class="filter" data-category="Electronics" type="button">Electronics</button>
-        <button class="filter" data-category="Home" type="button">Home</button>
-       
-      </div>
-      <!-- JavaScript creates product cards and their optional photo galleries here. -->
-      <div class="products" id="productGrid" aria-live="polite"></div>
-    </section>
+        <button
+            class="cart-button"
+            id="cartButton"
+            type="button"
+            aria-label="Open shopping cart"
+        >
+            Cart
 
-    <section class="about" id="about">
-      <div class="container about-inner">
-        <div><p class="eyebrow">WHY SIMPLE STORE?</p><h2>Simple, friendly shopping.</h2></div>
-        <div class="features">
-          <div><strong aria-hidden="true">🚚</strong><p>Delivery arranged with you</p></div>
-          <div><strong aria-hidden="true">💬</strong><p>Order directly on WhatsApp</p></div>
-          <div><strong aria-hidden="true">🤝</strong><p>Personal customer support</p></div>
-        </div>
-      </div>
-    </section>
+            <span
+                class="cart-count"
+                id="cartCount"
+                aria-label="0 items in cart"
+            >
+                0
+            </span>
+        </button>
 
-    <section class="contact" id="contact">
-      <div class="container contact-inner">
-        <div><p class="eyebrow">WE'RE HERE TO HELP</p><h2>Questions? Get in touch.</h2><p>Contact us about products, delivery, or an existing order.</p></div>
-        <div class="contact-links">
-          <a id="contactEmail" href="mailto:hello@example.com">✉️ <span>hello@example.com</span></a>
-          <a id="contactWhatsApp" href="#" target="_blank" rel="noopener">💬 <span id="contactWhatsAppText">WhatsApp us</span></a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer><div class="container footer-inner"><p>© <span id="year">2026</span> Simple Store. All rights reserved.</p><p>Contact: <a href="mailto:hello@example.com" id="footerEmail">hello@example.com</a></p></div></footer>
-
-  <div class="overlay" id="overlay"></div>
-  <!-- The cart contents and total are filled from the saved cart by script.js. -->
-  <aside class="cart-panel" id="cartPanel" aria-label="Shopping cart" aria-hidden="true">
-    <div class="cart-header"><h2>Your Cart</h2><button id="closeCart" class="close" type="button" aria-label="Close cart">×</button></div>
-    <div id="cartItems" class="cart-items" aria-live="polite"></div>
-    <div class="cart-footer"><div class="total"><span>Total</span><strong id="cartTotal">$0.00</strong></div><button class="btn checkout" id="checkoutButton" type="button">Order on WhatsApp</button></div>
-  </aside>
-
-  <!-- Customer details are converted into a WhatsApp message on form submit. -->
-  <div class="modal" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
-    <div class="modal-box">
-      <button class="close" id="closeModal" type="button" aria-label="Close order form">×</button>
-      <p class="eyebrow">WHATSAPP ORDER</p><h2 id="checkoutTitle">Where should we deliver?</h2>
-      <p class="form-intro">Your message will be prepared in WhatsApp so you can review and send it to the store.</p>
-      <form id="checkoutForm">
-        <label>Full name<input required type="text" name="name" autocomplete="name" placeholder="Your name"></label>
-        <label>Your phone number<input required type="tel" name="phone" autocomplete="tel" placeholder="For delivery updates"></label>
-        <label>Delivery address<textarea required name="address" autocomplete="street-address" rows="3" placeholder="Delivery address"></textarea></label>
-        <label>Order note <span class="optional">(optional)</span><textarea name="note" rows="2" placeholder="Size, color, or other requests"></textarea></label>
-        <button class="btn" type="submit">Continue to WhatsApp</button>
-      </form>
-      <p class="demo-note">No payment is collected on this website. Confirm availability, delivery, and payment with us in WhatsApp.</p>
     </div>
-  </div>
-  <!-- Loads catalog rendering, cart behavior, and WhatsApp order handling. -->
-  <script src="script.js"></script>
+
+</header>
+
+
+<section class="hero">
+
+    <h1>Welcome to SimpleStore</h1>
+
+    <p>
+        Find products you love and order easily through WhatsApp.
+    </p>
+
+</section>
+
+
+<nav class="filters" aria-label="Product categories">
+
+    <button
+        class="filter active"
+        type="button"
+        data-category="All"
+    >
+        All
+    </button>
+
+    <button
+        class="filter"
+        type="button"
+        data-category="Fashion"
+    >
+        Fashion
+    </button>
+
+    <button
+        class="filter"
+        type="button"
+        data-category="Electronics"
+    >
+        Electronics
+    </button>
+
+    <button
+        class="filter"
+        type="button"
+        data-category="Home"
+    >
+        Home
+    </button>
+
+</nav>
+
+
+<main class="products-container">
+
+    <div
+        class="product-grid"
+        id="productGrid"
+    ></div>
+
+</main>
+
+
+<div
+    class="overlay"
+    id="overlay"
+></div>
+
+
+<aside
+    class="cart-panel"
+    id="cartPanel"
+    aria-hidden="true"
+>
+
+    <div class="cart-header">
+
+        <h2>Your Cart</h2>
+
+        <button
+            class="close-button"
+            id="closeCart"
+            type="button"
+            aria-label="Close cart"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div
+        class="cart-items"
+        id="cartItems"
+    ></div>
+
+
+    <div class="cart-footer">
+
+        <div class="cart-total-row">
+
+            <span>Total</span>
+
+            <span id="cartTotal">
+                ₹0.00
+            </span>
+
+        </div>
+
+        <button
+            class="checkout-button"
+            id="checkoutButton"
+            type="button"
+        >
+            Order on WhatsApp
+        </button>
+
+    </div>
+
+</aside>
+
+
+<div
+    class="checkout-modal"
+    id="checkoutModal"
+>
+
+    <div class="checkout-box">
+
+        <div class="checkout-header">
+
+            <h2>Order Details</h2>
+
+            <button
+                id="closeModal"
+                type="button"
+                aria-label="Close checkout"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="checkoutForm">
+
+            <div class="form-group">
+
+                <label for="customerName">
+                    Name
+                </label>
+
+                <input
+                    id="customerName"
+                    name="name"
+                    type="text"
+                    placeholder="Your name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="customerPhone">
+                    Phone
+                </label>
+
+                <input
+                    id="customerPhone"
+                    name="phone"
+                    type="tel"
+                    placeholder="Your phone number"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="customerAddress">
+                    Delivery Address
+                </label>
+
+                <textarea
+                    id="customerAddress"
+                    name="address"
+                    placeholder="Enter your delivery address"
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="customerNote">
+                    Note
+                </label>
+
+                <textarea
+                    id="customerNote"
+                    name="note"
+                    placeholder="Any special instructions? (optional)"
+                ></textarea>
+
+            </div>
+
+
+            <button
+                class="submit-order"
+                type="submit"
+            >
+                Continue to WhatsApp
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <p>
+        Contact us:
+        <a id="contactEmail" href="#">
+            <span>hello@example.com</span>
+        </a>
+    </p>
+
+    <p>
+        <a
+            id="contactWhatsApp"
+            href="#"
+            target="_blank"
+            rel="noopener"
+        >
+            <span id="contactWhatsAppText">
+                WhatsApp us
+            </span>
+        </a>
+    </p>
+
+    <p>
+        © <span id="year"></span> SimpleStore
+    </p>
+
+</footer>
+
+
+<!-- IMPORTANT:
+     JavaScript is now in a separate file.
+-->
+<script src="script.js"></script>
+
 </body>
 </html>
