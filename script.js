@@ -27,7 +27,7 @@ const products = [
   { id: 8, name: "Bluetooth Speaker", category: "Electronics", price: 49.99, icon: "🔊", images: ["images/tata gold.jpg", "", ""] },
    { id: 9, name: "Ceramic Vase", category: "Home", price: 699, icon: "🏺", images: ["images/red label.jpg", "", ""] },
   { id: 10, name: "Cushion Cover", category: "Home", price: 399, icon: "🛋️", images: ["images/wagh bakri.jpg", "", ""] },
-  { id: 11, name: "Storage Basket", category: "Home", price: 899, icon: "🧺", images: ["images/lipton_tea.jpg", "", ""] }];
+  { id: 11, name: "Storage Basket", category: "Home", price: 899, images: ["images/lipton_tea.jpg", "", ""] }];
 
 // This key names the cart saved in the visitor's browser between page visits.
 const CART_KEY = "simpleStoreCart";
