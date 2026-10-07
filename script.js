@@ -26,8 +26,8 @@ const products = [
   { id: 7, name: "Backpack", category: "Fashion", price: 44.99, icon: "🎒", images: ["", "", ""] },
   { id: 8, name: "Bluetooth Speaker", category: "Electronics", price: 49.99, icon: "🔊", images: ["", "", ""] },
    { id: 9, name: "Ceramic Vase", category: "Home", price: 699, icon: "🏺", images: ["", "", ""] },
-  { id: 10, name: "Cushion Cover", category: "Home", price: 399, icon: "🛋️", images: ["/images/wagh bakri.jpg", "", ""] },
-  { id: 11, name: "Storage Basket", category: "Home", price: 899, icon: "🧺", images: ["/images/lipton_tea.jpg", "/images/red label.jpg", "my-website/images/tata gold.jpg"] }];
+  { id: 10, name: "Cushion Cover", category: "Home", price: 399, icon: "🛋️", images: ["images/wagh bakri.jpg", "", ""] },
+  { id: 11, name: "Storage Basket", category: "Home", price: 899, icon: "🧺", images: ["images/lipton_tea.jpg", "images/red label.jpg", "images/tata gold.jpg"] }];
 
 // This key names the cart saved in the visitor's browser between page visits.
 const CART_KEY = "simpleStoreCart";
