@@ -1,181 +1,108 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>My Online Store</title>
-
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Shop useful everyday products at SimpleStore. Add items to your cart and place your order directly on WhatsApp.">
+  <title>SimpleStore | Online Shop</title>
+  <!-- Loads the stylesheet that controls the existing store layout and colors. -->
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <header class="header">
+    <div class="container nav">
+      <a class="logo" href="#top" aria-label="SimpleStore home">Simple<span>Store</span></a>
+      <nav aria-label="Main navigation">
+        <a href="#products">Products</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <button class="cart-button" id="cartButton" type="button" aria-label="Open shopping cart">🛒 Cart <span id="cartCount">0</span></button>
+      </nav>
+    </div>
+  </header>
 
-<header>
-    <h1>🛍️ My Online Store</h1>
-    <p>Quality products at great prices</p>
-</header>
-
-<main>
-
-    <!-- PRODUCTS -->
-    <section class="products">
-
-        <div class="product">
-            <div class="product-image">👕</div>
-
-            <h2>T-Shirt</h2>
-            <p class="price">€20.00</p>
-
-            <button onclick="addToCart('T-Shirt', 20)">
-                Add to Cart
-            </button>
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-content">
+        <div>
+          <p class="eyebrow">WELCOME TO SIMPLESTORE</p>
+          <h1>Good products.<br><span>Simple shopping.</span></h1>
+          <p>Discover useful everyday products at straightforward prices. Choose what you love and send your order directly to us on WhatsApp.</p>
+          <a href="#products" class="btn">Shop Now</a>
         </div>
-
-
-        <div class="product">
-            <div class="product-image">👟</div>
-
-            <h2>Shoes</h2>
-            <p class="price">€50.00</p>
-
-            <button onclick="addToCart('Shoes', 50)">
-                Add to Cart
-            </button>
+        <div class="hero-card">
+          <div class="hero-icon" aria-hidden="true">🛍️</div>
+          <h3>Easy WhatsApp ordering</h3>
+          <p>Build your cart and send your order details in one tap.</p>
         </div>
-
-
-        <div class="product">
-            <div class="product-image">🎒</div>
-
-            <h2>Backpack</h2>
-            <p class="price">€35.00</p>
-
-            <button onclick="addToCart('Backpack', 35)">
-                Add to Cart
-            </button>
-        </div>
-
-
-        <div class="product">
-            <div class="product-image">⌚</div>
-
-            <h2>Watch</h2>
-            <p class="price">€75.00</p>
-
-            <button onclick="addToCart('Watch', 75)">
-                Add to Cart
-            </button>
-        </div>
-
+      </div>
     </section>
 
-
-    <!-- CART -->
-    <section class="cart">
-
-        <h2>🛒 Your Cart</h2>
-
-        <div id="cartItems">
-            <p>Your cart is empty.</p>
-        </div>
-
-        <div class="cart-total">
-            <strong>Total:</strong>
-            €<span id="cartTotal">0.00</span>
-        </div>
-
+    <section class="shop container" id="products">
+      <div class="section-heading">
+        <div><p class="eyebrow">OUR SHOP</p><h2>Featured Products</h2></div>
+        <label class="search-label" for="searchInput">Search products</label>
+        <input id="searchInput" type="search" placeholder="Search products..." aria-label="Search products">
+      </div>
+      <div class="filters" aria-label="Filter products by category">
+        <button class="filter active" data-category="All" type="button">All</button>
+        <button class="filter" data-category="Fashion" type="button">Fashion</button>
+        <button class="filter" data-category="Electronics" type="button">Electronics</button>
+        <button class="filter" data-category="Home" type="button">Home</button>
+      </div>
+      <!-- JavaScript creates product cards and their optional photo galleries here. -->
+      <div class="products" id="productGrid" aria-live="polite"></div>
     </section>
 
-
-    <!-- CUSTOMER DETAILS -->
-    <section class="checkout">
-
-        <h2>📦 Customer Details</h2>
-
-        <form id="orderForm">
-
-            <label for="customerName">
-                Name
-            </label>
-
-            <input
-                type="text"
-                id="customerName"
-                placeholder="Your name"
-                required
-            >
-
-
-            <label for="customerPhone">
-                Phone / WhatsApp
-            </label>
-
-            <input
-                type="tel"
-                id="customerPhone"
-                placeholder="Your phone number"
-                required
-            >
-
-
-            <label for="customerAddress">
-                Delivery Address
-            </label>
-
-            <textarea
-                id="customerAddress"
-                placeholder="Your full delivery address"
-                required
-            ></textarea>
-
-
-            <label for="customerCity">
-                City
-            </label>
-
-            <input
-                type="text"
-                id="customerCity"
-                placeholder="City"
-                required
-            >
-
-
-            <label for="customerPostal">
-                Postal Code
-            </label>
-
-            <input
-                type="text"
-                id="customerPostal"
-                placeholder="Postal code"
-                required
-            >
-
-
-            <button
-                type="submit"
-                class="whatsapp-button"
-            >
-                📱 Place Order via WhatsApp
-            </button>
-
-        </form>
-
+    <section class="about" id="about">
+      <div class="container about-inner">
+        <div><p class="eyebrow">WHY SIMPLESTORE?</p><h2>Simple, friendly shopping.</h2></div>
+        <div class="features">
+          <div><strong aria-hidden="true">🚚</strong><p>Delivery arranged with you</p></div>
+          <div><strong aria-hidden="true">💬</strong><p>Order directly on WhatsApp</p></div>
+          <div><strong aria-hidden="true">🤝</strong><p>Personal customer support</p></div>
+        </div>
+      </div>
     </section>
 
-</main>
+    <section class="contact" id="contact">
+      <div class="container contact-inner">
+        <div><p class="eyebrow">WE'RE HERE TO HELP</p><h2>Questions? Get in touch.</h2><p>Contact us about products, delivery, or an existing order.</p></div>
+        <div class="contact-links">
+          <a id="contactEmail" href="mailto:hello@example.com">✉️ <span>hello@example.com</span></a>
+          <a id="contactWhatsApp" href="#" target="_blank" rel="noopener">💬 <span id="contactWhatsAppText">WhatsApp us</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
 
+  <footer><div class="container footer-inner"><p>© <span id="year">2026</span> SimpleStore. All rights reserved.</p><p>Contact: <a href="mailto:hello@example.com" id="footerEmail">hello@example.com</a></p></div></footer>
 
-<footer>
-    <p>© 2026 My Online Store</p>
-</footer>
+  <div class="overlay" id="overlay"></div>
+  <!-- The cart contents and total are filled from the saved cart by script.js. -->
+  <aside class="cart-panel" id="cartPanel" aria-label="Shopping cart" aria-hidden="true">
+    <div class="cart-header"><h2>Your Cart</h2><button id="closeCart" class="close" type="button" aria-label="Close cart">×</button></div>
+    <div id="cartItems" class="cart-items" aria-live="polite"></div>
+    <div class="cart-footer"><div class="total"><span>Total</span><strong id="cartTotal">$0.00</strong></div><button class="btn checkout" id="checkoutButton" type="button">Order on WhatsApp</button></div>
+  </aside>
 
-
-<script src="script.js"></script>
-
+  <!-- Customer details are converted into a WhatsApp message on form submit. -->
+  <div class="modal" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <div class="modal-box">
+      <button class="close" id="closeModal" type="button" aria-label="Close order form">×</button>
+      <p class="eyebrow">WHATSAPP ORDER</p><h2 id="checkoutTitle">Where should we deliver?</h2>
+      <p class="form-intro">Your message will be prepared in WhatsApp so you can review and send it to the store.</p>
+      <form id="checkoutForm">
+        <label>Full name<input required type="text" name="name" autocomplete="name" placeholder="Your name"></label>
+        <label>Your phone number<input required type="tel" name="phone" autocomplete="tel" placeholder="For delivery updates"></label>
+        <label>Delivery address<textarea required name="address" autocomplete="street-address" rows="3" placeholder="Delivery address"></textarea></label>
+        <label>Order note <span class="optional">(optional)</span><textarea name="note" rows="2" placeholder="Size, color, or other requests"></textarea></label>
+        <button class="btn" type="submit">Continue to WhatsApp</button>
+      </form>
+      <p class="demo-note">No payment is collected on this website. Confirm availability, delivery, and payment with us in WhatsApp.</p>
+    </div>
+  </div>
+  <!-- Loads catalog rendering, cart behavior, and WhatsApp order handling. -->
+  <script src="script.js"></script>
 </body>
 </html>
-```
