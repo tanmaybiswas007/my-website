@@ -5,7 +5,7 @@ const STORE = {
   name: "SimpleStore",
   email: "hello@example.com",
   whatsapp: "919432440130",
-  currency: "USD",
+  currency: "INR",
   locale: "en-US"
 };
 
