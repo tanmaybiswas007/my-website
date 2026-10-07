@@ -123,7 +123,7 @@ const products = [
         category: "Home",
         price: 399,
         images: [
-            "images/wagh-bakri.jpg"
+            "images/cushion-cover.jpg"
         ]
     },
 
@@ -133,10 +133,8 @@ const products = [
         category: "Home",
         price: 899,
         images: [
-            "images/lipton-tea.jpg",
-            "images/red-label.jpg",
-            "images/tata-gold.jpg"
-        ]
+            "images/storage-basket.jpg",
+              ]
     }
 
 ];
